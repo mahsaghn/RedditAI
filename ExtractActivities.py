@@ -1,6 +1,9 @@
 import json
 import requests
 from datetime import datetime, timezone
+import multiprocessing
+import pickle
+import os
 
 checked_users = dict()
 checked_users["[deleted]"] = True
@@ -63,22 +66,19 @@ def get_all_posts_of_user(user, start_time, end_time):
 
 def get_user_activities(user):
     all_posts = get_all_posts_of_user(user, "2025-08-01", "2025-09-16")
-    return {user:all_posts}
+    pickle.dump(all_posts, open(f"data/{user}.pkl", "wb"), protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def check_users(file_path):
+    user_set = {}
     with open(file_path, 'r') as file:
         for line in file:
             post_info = json.loads(line)
             author = post_info['author']
-            # print(author)
-            if author in checked_users:
-                continue
-            checked_users[author] = True
-            print(author)
-            with open("users_activities.jsonl", "a") as f:  # "a" = append
-                f.write(json.dumps(get_user_activities(author)) + "\n")
-            print(f"finishied {author}")
+            user_set.add(author)
+    os.makedirs("data", exist_ok=True)
+    pool = multiprocessing.Pool(processes=16)
+    pool.map(get_user_activities, list(user_set))
 
 open("users_activities.jsonl", "w").close()
 check_users("./Data/r_ChatGPT_posts.jsonl")
