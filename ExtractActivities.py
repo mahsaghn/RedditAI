@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+
 checked_users = {"[deleted]": True}
 
 def de_duplicate(posts):
@@ -52,6 +53,7 @@ def get_all_posts_of_user(user, start_date, end_date):
     return de_duplicate(all_posts)
 
 def get_user_activities(user):
+
     posts = get_all_posts_of_user(user, "2025-08-01", "2025-09-16")
     return {user: posts}
 
@@ -95,3 +97,4 @@ def check_users(file_path):
 if __name__ == "__main__":
     check_users("./Data/r_ChatGPT_posts.jsonl")
     check_users("./Data/r_ClaudeAI_posts.jsonl")
+
