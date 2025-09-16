@@ -67,6 +67,12 @@ def get_user_activities(user):
 
 
 def check_users(file_path):
+    with open("users_activities.jsonl", 'r') as file:
+        for line in file:
+            info = json.loads(line)
+            for key in info.keys():
+                checked_users[key] = True
+
     with open(file_path, 'r') as file:
         for line in file:
             post_info = json.loads(line)
@@ -80,6 +86,6 @@ def check_users(file_path):
                 f.write(json.dumps(get_user_activities(author)) + "\n")
             print(f"finishied {author}")
 
-open("users_activities.jsonl", "w").close()
+# open("users_activities.jsonl", "w").close()
 check_users("./Data/r_ChatGPT_posts.jsonl")
 check_users("./Data/r_ClaudeAI_posts.jsonl")
