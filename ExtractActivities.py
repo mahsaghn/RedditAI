@@ -97,4 +97,5 @@ def check_users(file_path):
 if __name__ == "__main__":
     check_users("./Data/r_ChatGPT_posts.jsonl")
     check_users("./Data/r_ClaudeAI_posts.jsonl")
+    check_users("./Data/r_Bard_posts.jsonl")
 

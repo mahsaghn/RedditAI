@@ -9,6 +9,7 @@ using namespace std;
 
 map<string, vector<string>> subreddits;
 map<string, int> type;
+map<string, int> programmer;
 vector<string> users;
 
 int main()
@@ -27,16 +28,17 @@ int main()
 
         string user = row[0];
 		type[user] = stoi(row[1]);
-		for (size_t i = 2; i < row.size(); ++i) 
+		programmer[user] = stoi(row[2]);
+		for (size_t i = 3; i < row.size(); ++i) 
 			subreddits[user].push_back(row[i]);
 		users.push_back(user);
 		
     }
 	ofstream outfile("nodes.csv");
-	outfile << "Id,Label,Type\n";
+	outfile << "Id,Label,Type,Programmer\n";
 	for (const auto& user : users) 
 	{
-		outfile << user << "," << user << "," << type[user] << "\n";
+		outfile << user << "," << user << "," << type[user] <<","<< programmer[user] << "\n";
 	}
 	outfile.close();
 

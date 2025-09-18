@@ -23,13 +23,23 @@ with open("users_activities.jsonl", 'r') as file:
         if 'ClaudeAI' in user_activities[user]:
             type |= 2
             user_activities[user].remove('ClaudeAI')
+        if 'Bard' in user_activities[user]:
+            type |= 4
+            user_activities[user].remove('Bard')
 
+        programmer = 0
+        coding_words = ['coding', 'code', 'programmer', 'programming', 'developing', 'backend', 'frontend', 'developer']
+        for word in coding_words:
+            for subreddit in user_activities[user]:
+                if word in subreddit:
+                    programmer |= 1
+                    break
 
         if len(user_activities[user]) < 1:
             continue
 
         with open("raw_graph.txt", 'a') as f:
-            f.write(f'{user},{type}')
+            f.write(f'{user},{type},{programmer}')
             for subreddits in user_activities[user]:
                 f.write(f',{subreddits}')
             f.write('\n')
